@@ -1,0 +1,188 @@
+openapi: 3.0.0
+info:
+  title: Bank Account API
+  contact: {}
+  version: '1.0'
+servers:
+- url: http://localhost:8081
+  variables: {}
+- url: https://localhost:8081
+  variables: {}
+paths:
+  /user/{userid}/transfer:
+    post:
+      tags:
+      - user
+      summary: UserTransferByUserid_POST
+      operationId: UserTransferByUserid_POST
+      parameters:
+      - name: userid
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /user/{userid}/account/{acctid}:
+    get:
+      tags:
+      - user
+      summary: UserAccountByUseridAndAcctid_GET
+      operationId: UserAccountByUseridAndAcctid_GET
+      parameters:
+      - name: acctid
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '976784784'
+      - name: userid
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+      deprecated: false
+  /user/{userid}/account/{acctid}/balance:
+    get:
+      tags:
+      - user
+      summary: UserAccountBalanceByUseridAndAcctid_GET
+      operationId: UserAccountBalanceByUseridAndAcctid_GET
+      parameters:
+      - name: acctid
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+          example: '976784784'
+      - name: userid
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccountBalanceresponse'
+      deprecated: false
+  /user/{userid}/transferTo:
+    post:
+      tags:
+      - user
+      summary: UserTransferToByUserid_POST
+      operationId: UserTransferToByUserid_POST
+      parameters:
+      - name: userid
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserTransferTorequest'
+        required: true
+      responses:
+        '201':
+          description: ''
+          headers: {}
+          content: {}
+      deprecated: false
+components:
+  schemas:
+    Account:
+      title: Account
+      required:
+      - acct_nbr
+      - avail_bal
+      - settled_bal
+      - acct_nickname
+      - acct_type
+      - currency
+      type: object
+      properties:
+        acct_nbr:
+          type: string
+          example: '976784784'
+        avail_bal:
+          type: number
+          example: 90090.01
+        settled_bal:
+          type: number
+          example: 10000.58
+        acct_nickname:
+          type: string
+          example: Example
+        acct_type:
+          type: string
+          example: Checking
+        currency:
+          $ref: '#/components/schemas/currency'
+    currency:
+      title: currency
+      enum:
+      - USD
+      - EUR
+      type: string
+    toAcct:
+      title: toAcct
+      required:
+      - AccountId
+      type: object
+      properties:
+        AccountId:
+          type: string
+          example: '984775753'
+    UserAccountBalanceresponse:
+      title: UserAccountBalanceresponse
+      required:
+      - avail_bal
+      - settled_bal
+      type: object
+      properties:
+        avail_bal:
+          type: number
+          example: 90090.01
+        settled_bal:
+          type: number
+          example: 10000.58
+    UserTransferTorequest:
+      title: UserTransferTorequest
+      required:
+      - toAcct
+      type: object
+      properties:
+        toAcct:
+          $ref: '#/components/schemas/toAcct'
+tags:
+- name: user
+  description: ''
